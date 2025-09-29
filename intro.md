@@ -1,11 +1,22 @@
-# Welcome to my Jupyter Book!
+# DS413 – Elective 4 (Deep Learning) Jupyter Book Compilation
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+<p align="center">
+  <img src="banner.png"/>
+</p>
 
-Check out the content pages bundled with this sample book to see more.
+---
+
+
+## **About This Compilation**
+
+This site is the official compilation of my work for **DS413 – Elective 4 (Deep Learning)**.  
+It showcases the outputs of my laboratory exercises and projects in the form of Jupyter Notebooks.
+
+This Jupyter Book is designed to:  
+- Provide a **structured documentation** of my work in DS413, covering all exercises and projects.  
+- Highlight both **my theoretical understanding and practical skills** in deep learning, from concepts applied in activities to project implementations.  
+- Serve as a **portfolio of my work**, highlighting my project workflows and the deep learning frameworks I applied throughout the course.  
+
 
 ```{tableofcontents}
 ```
