@@ -1,7 +1,7 @@
 # DS413 – Elective 4 (Deep Learning) Jupyter Book Compilation
 
 <p align="center">
-  <img src="banner.png"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Kobe%20Marco%20Olaguir&animation=scaleIn"/>
 </p>
 
 ---
