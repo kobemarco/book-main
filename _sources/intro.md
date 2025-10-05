@@ -1,7 +1,7 @@
 # DS413 – Elective 4 (Deep Learning) Jupyter Book Compilation
 
 <p align="center">
-  <img src="banner.png" />
+  <img src="https://imgur.com/a/AeyXoFM"/>
 </p>
 
 ---
