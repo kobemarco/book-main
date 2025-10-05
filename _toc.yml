@@ -10,6 +10,10 @@ parts:
     chapters:
       - file: Laboratories/laboratory1
       - file: Laboratories/laboratory2
+      - file: Laboratories/laboratory3
+      - file: Laboratories/laboratory4
+      - file: Laboratories/laboratory5
+      - file: Laboratories/laboratory6
 
   - caption: Projects
     chapters:
