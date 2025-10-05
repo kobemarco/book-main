@@ -7,7 +7,7 @@
 ---
 
 
-## **About This Compilation**
+## **About This Compilation** 
 
 This site is the official compilation of my work for **DS413 – Elective 4 (Deep Learning)**.  
 It showcases the outputs of my laboratory exercises and projects in the form of Jupyter Notebooks.
