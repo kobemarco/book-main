@@ -444,7 +444,7 @@ document.write(`
 <span class="n">hidden</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">wsh</span><span class="p">)</span>
 
 <span class="c1"># Calculate weighted sum for output layer</span>
-<span class="n">wso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">owu</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span> <span class="o">+</span> <span class="n">owub</span>
+<span class="n">wso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ouw</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span> <span class="o">+</span> <span class="n">owub</span>
 <span class="n">pred_output</span> <span class="o">=</span> <span class="n">wso</span> <span class="c1"># No activation function on the output, as per the manual calculation</span>
 
 <span class="c1"># Calculate the error (MSE is commonly used, but for simplicity here we use the difference)</span>
@@ -470,11 +470,11 @@ Error: -0.9200
 <span class="n">d_bo</span> <span class="o">=</span> <span class="n">delta_o</span>
 
 <span class="c1"># Calculate gradients for the hidden layer</span>
-<span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">owu</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_o</span><span class="p">)</span> <span class="o">*</span> <span class="n">relu_derivative</span><span class="p">(</span><span class="n">wsh</span><span class="p">)</span>
+<span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ouw</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delta_o</span><span class="p">)</span> <span class="o">*</span> <span class="n">relu_derivative</span><span class="p">(</span><span class="n">wsh</span><span class="p">)</span>
 <span class="n">d_Wh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">delta_h</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 <span class="n">d_bh</span> <span class="o">=</span> <span class="n">delta_h</span>
 
-<span class="n">owu</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d_Wo</span>
+<span class="n">ouw</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d_Wo</span>
 <span class="n">owub</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d_bo</span>
 <span class="n">hwu</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d_Wh</span>
 <span class="n">hwub</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d_bh</span>
@@ -482,7 +482,7 @@ Error: -0.9200
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- After one step of training ---&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updated Hidden Weights (W_h):</span><span class="se">\n</span><span class="si">{</span><span class="n">hwu</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Updated Hidden Biases (b_h):</span><span class="se">\n</span><span class="si">{</span><span class="n">hwub</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Updated Output Weights (W_o):</span><span class="se">\n</span><span class="si">{</span><span class="n">owu</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Updated Output Weights (W_o):</span><span class="se">\n</span><span class="si">{</span><span class="n">ouw</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Updated Output Bias (b_o):</span><span class="se">\n</span><span class="si">{</span><span class="n">owub</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
