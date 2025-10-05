@@ -13,6 +13,7 @@ parts:
       - file: Laboratories/laboratory3
       - file: Laboratories/laboratory4
       - file: Laboratories/laboratory5
+      - file: Laboratories/laboratory6
 
   - caption: Projects
     chapters:
