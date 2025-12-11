@@ -1,26 +1,18 @@
 format: jb-book
 root: intro
 
+
 parts:
-  - caption: Lectures
+  - caption: Section 1
     chapters:
-      - file: Lectures/lecture1
-
-  - caption: Laboratories
+      - file: Lectures/intro
+      - glob: Lectures/lecture*
+  - caption: Section 2
     chapters:
-      - file: Laboratories/laboratory1
-      - file: Laboratories/laboratory2
-      - file: Laboratories/laboratory3
-      - file: Laboratories/laboratory4
-      - file: Laboratories/laboratory5
-      - file: Laboratories/laboratory6
-      - file: Laboratories/laboratory7
-
-  - caption: Blog
+      - file: Laboratories/intro
+      - glob: Laboratories/laboratory*
+  - caption: Section 3
     chapters:
-      - file: Blog/blog
-
-  - caption: Project
-    chapters:
+      - file: Project/intro
       - file: Project/EDA_Pulmoscope
       - file: Project/PulmoScope
