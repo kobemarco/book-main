@@ -62,7 +62,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="PulmoScope" href="PulmoScope.html" />
-    <link rel="prev" title="Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST" href="../Blog/blog.html" />
+    <link rel="prev" title="Laboratory Task 7" href="../Laboratories/laboratory7.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -166,12 +166,13 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Section 1</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../Lectures/lecture1.html"><strong>Lecture Task 1</strong></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Laboratories</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Section 2</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/intro.html"><strong>Laboratory</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory1.html">Laboratory Task 1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory2.html">Laboratory Task 2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory3.html">Laboratory Task 3</a></li>
@@ -180,15 +181,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory6.html">Laboratory Task 6</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory7.html">Laboratory Task 7</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Blog</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../Blog/blog.html"><strong>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</strong></a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Section 3</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Exploratory Data Analysis</strong></a></li>
-
-
 <li class="toctree-l1"><a class="reference internal" href="PulmoScope.html"><strong>PulmoScope</strong></a></li>
 </ul>
 
@@ -338,7 +333,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Exploratory Data Analysis</strong></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-dataset-directory"><strong>Explore Dataset Directory</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-and-merge-demographics-diagnosis-csvs"><strong>Load and Merge Demographics &amp; Diagnosis CSVs</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-all-filenames"><strong>List All Filenames</strong></a></li>
@@ -346,10 +340,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-recording-info-annotation-dictionaries"><strong>Collect Recording Info &amp; Annotation Dictionaries</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#count-crackles-wheezes-per-file"><strong>Count Crackles/Wheezes Per File</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-assign-diagnosis-labels"><strong>Aggregate &amp; Assign Diagnosis Labels</strong></a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><strong>Exploratory Data Analysis</strong></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-overview-of-demographic-dataset"><strong>Basic Overview of Demographic Dataset</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosis-distribution"><strong>Diagnosis Distribution</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dominant-and-minority-classes">Dominant and Minority Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analytical-implications">Analytical Implications</a></li>
@@ -359,9 +349,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-audio-based-labels"><strong>Overview of Audio-Based Labels</strong></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-audio-vs-demographic-datasets">Overview of Audio VS Demographic Datasets</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-gender-vs-respiratory-sound-patterns-chi-squared">Analyze Gender vs. Respiratory Sound Patterns (Chi-squared)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-age-vs-clinical-diagnosis-anova">Analyze Age vs. Clinical Diagnosis (ANOVA)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-gender-vs-clinical-diagnosis-chi-squared">Analyze Gender vs. Clinical Diagnosis (Chi-squared)</a><ul class="nav section-nav flex-column">
@@ -370,9 +357,6 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-audio-features">Extract Audio Features</a></li>
 </ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -1727,12 +1711,6 @@ document.write(`
   </div>
 </div></div>
 </div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1><strong>Exploratory Data Analysis</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<section id="basic-overview-of-demographic-dataset">
-<h2><strong>Basic Overview of Demographic Dataset</strong><a class="headerlink" href="#basic-overview-of-demographic-dataset" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of demographics dataframe:&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -2905,11 +2883,7 @@ document.write(`
   </div>
 </div></div>
 </div>
-</section>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="overview-of-audio-vs-demographic-datasets">
-<h1>Overview of Audio VS Demographic Datasets<a class="headerlink" href="#overview-of-audio-vs-demographic-datasets" title="Link to this heading">#</a></h1>
+<p><strong>Overview of Audio VS Demographic Datasets</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns_to_check</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="s1">&#39;Diagnosis&#39;</span><span class="p">,</span> <span class="s1">&#39;audio_diagnosis&#39;</span><span class="p">]</span>
@@ -3275,6 +3249,8 @@ Correlation Ratio (η) for Age vs. Respiratory Sound Patterns: 0.232
 </div>
 </div>
 <p>One-way ANOVA shows a statistically significant difference in mean age across audio-based diagnosis groups (F(2, N−3) = 17.23, p &lt; 0.001). However, the correlation ratio (η = 0.232; η² ≈ 0.054) indicates a <strong>small effect</strong> — only ~5.4% of age variance is explained by diagnosis group. Clinically, older participants appear slightly more likely to have crackles or mixed findings, but age alone is a weak predictor of respiratory sound class and should not be used as a surrogate for diagnostic category.</p>
+</section>
+</section>
 <section id="analyze-gender-vs-respiratory-sound-patterns-chi-squared">
 <h2>Analyze Gender vs. Respiratory Sound Patterns (Chi-squared)<a class="headerlink" href="#analyze-gender-vs-respiratory-sound-patterns-chi-squared" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -4165,12 +4141,12 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../Blog/blog.html"
+       href="../Laboratories/laboratory7.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><strong>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</strong></p>
+        <p class="prev-next-title">Laboratory Task 7</p>
       </div>
     </a>
     <a class="right-next"
@@ -4198,7 +4174,6 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Exploratory Data Analysis</strong></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-dataset-directory"><strong>Explore Dataset Directory</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-and-merge-demographics-diagnosis-csvs"><strong>Load and Merge Demographics &amp; Diagnosis CSVs</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-all-filenames"><strong>List All Filenames</strong></a></li>
@@ -4206,10 +4181,6 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-recording-info-annotation-dictionaries"><strong>Collect Recording Info &amp; Annotation Dictionaries</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#count-crackles-wheezes-per-file"><strong>Count Crackles/Wheezes Per File</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-assign-diagnosis-labels"><strong>Aggregate &amp; Assign Diagnosis Labels</strong></a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><strong>Exploratory Data Analysis</strong></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-overview-of-demographic-dataset"><strong>Basic Overview of Demographic Dataset</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosis-distribution"><strong>Diagnosis Distribution</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dominant-and-minority-classes">Dominant and Minority Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analytical-implications">Analytical Implications</a></li>
@@ -4219,9 +4190,6 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-audio-based-labels"><strong>Overview of Audio-Based Labels</strong></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-audio-vs-demographic-datasets">Overview of Audio VS Demographic Datasets</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-gender-vs-respiratory-sound-patterns-chi-squared">Analyze Gender vs. Respiratory Sound Patterns (Chi-squared)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-age-vs-clinical-diagnosis-anova">Analyze Age vs. Clinical Diagnosis (ANOVA)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-gender-vs-clinical-diagnosis-chi-squared">Analyze Gender vs. Clinical Diagnosis (Chi-squared)</a><ul class="nav section-nav flex-column">
@@ -4230,9 +4198,6 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-audio-features">Extract Audio Features</a></li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>
