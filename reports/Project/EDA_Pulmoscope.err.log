@@ -1,0 +1,207 @@
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# 1. Re-create summary DataFrame with clinical diagnosis to ensure data consistency
+labels_df_recreated = file_label_df.sort_values(by='filename')
+summary_temp = labels_df_recreated.groupby('filename').sum()
+
+conditions = [
+    (summary_temp['crackles only'] == 0) &
+    (summary_temp['wheezes only'] == 0) &
+    (summary_temp['crackles and wheezees'] == 0),
+
+    (summary_temp['crackles only'] == summary_temp.max(axis=1)),
+    (summary_temp['wheezes only'] == summary_temp.max(axis=1)),
+    (summary_temp['crackles and wheezees'] == summary_temp.max(axis=1)),
+
+    (summary_temp['no label'] == summary_temp.max(axis=1)) &
+    (summary_temp['crackles only'] > summary_temp['wheezes only']) &
+    (summary_temp['crackles only'] > summary_temp['crackles and wheezees']),
+
+    (summary_temp['no label'] == summary_temp.max(axis=1)) &
+    (summary_temp['wheezes only'] >= summary_temp['crackles only']) &
+    (summary_temp['wheezes only'] > summary_temp['crackles and wheezees']),
+
+    (summary_temp['no label'] == summary_temp.max(axis=1)) &
+    (summary_temp['crackles and wheezees'] >= summary_temp['crackles only']) &
+    (summary_temp['crackles and wheezees'] >= summary_temp['wheezes only']),
+]
+
+values = [
+    'Healthy',
+    'Crackles',
+    'Wheezes',
+    'Wheezes & Crackles',
+    'Crackles',
+    'Wheezes',
+    'Wheezes & Crackles'
+]
+
+summary_temp['diagnosis'] = np.select(conditions, values, default='Unknown')
+
+# Reset the index to make 'filename' a regular column
+summary_merged = summary_temp.reset_index().rename(columns={'index': 'filename'})
+
+# Ensure the 'filename' column is explicitly string type
+summary_merged['filename'] = summary_merged['filename'].astype(str)
+
+# Extract Patient number from the 'filename' column
+summary_merged['Patient number'] = summary_merged['filename'].str.split('_').str[0].astype(int)
+
+# Rename the existing audio-based diagnosis column
+summary_merged = summary_merged.rename(columns={'diagnosis': 'audio_diagnosis'})
+
+# Merge with the main demographic and diagnosis DataFrame (df)
+df_patient_diagnosis = df[['Patient number', 'Diagnosis']].drop_duplicates(subset=['Patient number'])
+summary_merged = pd.merge(summary_merged, df_patient_diagnosis, on='Patient number', how='left')
+
+# Rename the merged clinical 'Diagnosis' column for clarity
+summary_merged = summary_merged.rename(columns={'Diagnosis': 'clinical_diagnosis'})
+
+print("Recreated summary_merged DataFrame with clinical diagnosis.")
+
+# 2. & 3. Extract Audio Features and create features_df
+all_audio_features = []
+sr_new = 16000 # Standardize sample rate to 16kHz for feature extraction
+
+for index, row in tqdm(summary_merged.iterrows(), total=summary_merged.shape[0], desc="Extracting Audio Features"):
+    filename = row['filename']
+    clinical_diagnosis = row['clinical_diagnosis']
+    audio_diagnosis = row['audio_diagnosis']
+
+    wav_path = os.path.join(root, filename + '.wav')
+
+    try:
+        y, sr_original = librosa.load(wav_path, sr=None) # Load with original sample rate
+
+        # Resample if original sample rate is different from target
+        if sr_original != sr_new:
+            y_resampled = librosa.resample(y=y, orig_sr=sr_original, target_sr=sr_new)
+        else:
+            y_resampled = y
+
+        # Calculate duration
+        duration = len(y_resampled) / sr_new # Use resampled length and new SR
+
+        # Calculate Spectral Centroid
+        spectral_centroid = np.mean(librosa.feature.spectral_centroid(y=y_resampled, sr=sr_new))
+
+        # Calculate Spectral Bandwidth
+        spectral_bandwidth = np.mean(librosa.feature.spectral_bandwidth(y=y_resampled, sr=sr_new))
+
+        # Calculate Spectral Roll-off
+        spectral_rolloff = np.mean(librosa.feature.spectral_rolloff(y=y_resampled, sr=sr_new))
+
+        # Calculate Spectral Flux using onset_strength as a proxy
+        onset_env = librosa.onset.onset_strength(y=y_resampled, sr=sr_new)
+        spectral_flux = np.mean(onset_env)
+
+        all_audio_features.append({
+            'filename': filename,
+            'clinical_diagnosis': clinical_diagnosis,
+            'audio_diagnosis': audio_diagnosis,
+            'original_sample_rate': sr_original,
+            'duration_sec': duration,
+            'spectral_centroid': spectral_centroid,
+            'spectral_bandwidth': spectral_bandwidth,
+            'spectral_rolloff': spectral_rolloff,
+            'spectral_flux': spectral_flux
+        })
+
+    except Exception as e:
+        print(f"Error processing {filename}: {e}")
+        all_audio_features.append({
+            'filename': filename,
+            'clinical_diagnosis': clinical_diagnosis,
+            'audio_diagnosis': audio_diagnosis,
+            'original_sample_rate': None,
+            'duration_sec': None,
+            'spectral_centroid': None,
+            'spectral_bandwidth': None,
+            'spectral_rolloff': None,
+            'spectral_flux': None
+        })
+
+features_df = pd.DataFrame(all_audio_features)
+print("Audio feature extraction complete.")
+
+# 4. Group by clinical_diagnosis and aggregate, creating a new 'grouped_clinical_diagnosis'
+def group_diagnoses_for_mean_features(diagnosis):
+    if diagnosis in ['Healthy', 'COPD', 'Pneumonia']:
+        return diagnosis
+    else:
+        return 'Others'
+
+features_df['grouped_clinical_diagnosis'] = features_df['clinical_diagnosis'].apply(group_diagnoses_for_mean_features)
+
+mean_features_by_grouped_clinical_diagnosis = features_df.groupby('grouped_clinical_diagnosis').agg(
+    **{
+        'Mean Sample Rate (Hz)': ('original_sample_rate', 'mean'),
+        'Mean Duration (s)': ('duration_sec', 'mean'),
+        'Min Duration (s)': ('duration_sec', 'min'),
+        'Max Duration (s)': ('duration_sec', 'max'),
+        'Mean Spectral Centroid (Hz)': ('spectral_centroid', 'mean'),
+        'Mean Spectral Bandwidth (Hz)': ('spectral_bandwidth', 'mean'),
+        'Mean Spectral Rolloff (Hz)': ('spectral_rolloff', 'mean'),
+        'Mean Spectral Flux (Hz)': ('spectral_flux', 'mean')
+    }
+)
+
+# 5. Filter for requested diagnoses
+target_display_diagnoses = ['Healthy', 'COPD', 'Pneumonia', 'Others']
+
+# Handle cases where a diagnosis might not be present in the grouped results
+filtered_mean_features = mean_features_by_grouped_clinical_diagnosis.reindex(target_display_diagnoses).copy()
+------------------
+
+----- stdout -----
+Recreated summary_merged DataFrame with clinical diagnosis.
+------------------
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mImportError[0m                               Traceback (most recent call last)
+Cell [1;32mIn[28], line 64[0m
+[0;32m     61[0m all_audio_features [38;5;241m=[39m []
+[0;32m     62[0m sr_new [38;5;241m=[39m [38;5;241m16000[39m [38;5;66;03m# Standardize sample rate to 16kHz for feature extraction[39;00m
+[1;32m---> 64[0m [38;5;28;01mfor[39;00m index, row [38;5;129;01min[39;00m [43mtqdm[49m[43m([49m[43msummary_merged[49m[38;5;241;43m.[39;49m[43miterrows[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43mtotal[49m[38;5;241;43m=[39;49m[43msummary_merged[49m[38;5;241;43m.[39;49m[43mshape[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m,[49m[43m [49m[43mdesc[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mExtracting Audio Features[39;49m[38;5;124;43m"[39;49m[43m)[49m:
+[0;32m     65[0m     filename [38;5;241m=[39m row[[38;5;124m'[39m[38;5;124mfilename[39m[38;5;124m'[39m]
+[0;32m     66[0m     clinical_diagnosis [38;5;241m=[39m row[[38;5;124m'[39m[38;5;124mclinical_diagnosis[39m[38;5;124m'[39m]
+
+File [1;32m~\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\tqdm\notebook.py:234[0m, in [0;36mtqdm_notebook.__init__[1;34m(self, *args, **kwargs)[0m
+[0;32m    232[0m unit_scale [38;5;241m=[39m [38;5;241m1[39m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39munit_scale [38;5;129;01mis[39;00m [38;5;28;01mTrue[39;00m [38;5;28;01melse[39;00m [38;5;28mself[39m[38;5;241m.[39munit_scale [38;5;129;01mor[39;00m [38;5;241m1[39m
+[0;32m    233[0m total [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mtotal [38;5;241m*[39m unit_scale [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mtotal [38;5;28;01melse[39;00m [38;5;28mself[39m[38;5;241m.[39mtotal
+[1;32m--> 234[0m [38;5;28mself[39m[38;5;241m.[39mcontainer [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mstatus_printer[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mfp[49m[43m,[49m[43m [49m[43mtotal[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mdesc[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mncols[49m[43m)[49m
+[0;32m    235[0m [38;5;28mself[39m[38;5;241m.[39mcontainer[38;5;241m.[39mpbar [38;5;241m=[39m proxy([38;5;28mself[39m)
+[0;32m    236[0m [38;5;28mself[39m[38;5;241m.[39mdisplayed [38;5;241m=[39m [38;5;28;01mFalse[39;00m
+
+File [1;32m~\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\tqdm\notebook.py:108[0m, in [0;36mtqdm_notebook.status_printer[1;34m(_, total, desc, ncols)[0m
+[0;32m     99[0m [38;5;66;03m# Fallback to text bar if there's no total[39;00m
+[0;32m    100[0m [38;5;66;03m# DEPRECATED: replaced with an 'info' style bar[39;00m
+[0;32m    101[0m [38;5;66;03m# if not total:[39;00m
+[1;32m   (...)[0m
+[0;32m    105[0m 
+[0;32m    106[0m [38;5;66;03m# Prepare IPython progress bar[39;00m
+[0;32m    107[0m [38;5;28;01mif[39;00m IProgress [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:  [38;5;66;03m# #187 #451 #558 #872[39;00m
+[1;32m--> 108[0m     [38;5;28;01mraise[39;00m [38;5;167;01mImportError[39;00m(WARN_NOIPYW)
+[0;32m    109[0m [38;5;28;01mif[39;00m total:
+[0;32m    110[0m     pbar [38;5;241m=[39m IProgress([38;5;28mmin[39m[38;5;241m=[39m[38;5;241m0[39m, [38;5;28mmax[39m[38;5;241m=[39mtotal)
+
+[1;31mImportError[0m: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+

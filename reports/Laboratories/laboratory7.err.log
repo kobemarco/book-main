@@ -1,0 +1,149 @@
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from tensorflow.keras.layers import LeakyReLU
+
+def build_cnn_model(activation_func='relu', optimizer='adam'):
+    """
+    Builds a simple CNN model for image classification with flexible activation
+    functions and optimizers.
+
+    Args:
+        activation_func (str): The activation function to use in hidden layers.
+        optimizer (str): The optimizer to use for compiling the model.
+
+    Returns:
+        tensorflow.keras.models.Sequential: The built CNN model.
+    """
+    model = Sequential()
+    model.add(Conv2D(32, (3, 3), input_shape=(img_height, img_width, 3)))
+    if activation_func == 'leakyrelu':
+        model.add(LeakyReLU(negative_slope=0.01))
+    else:
+        model.add(tf.keras.layers.Activation(activation_func))
+
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(64, (3, 3)))
+    if activation_func == 'leakyrelu':
+        model.add(LeakyReLU(negative_slope=0.01))
+    else:
+        model.add(tf.keras.layers.Activation(activation_func))
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Flatten())
+    model.add(Dense(128))
+    if activation_func == 'leakyrelu':
+        model.add(LeakyReLU(negative_slope=0.01))
+    else:
+        model.add(tf.keras.layers.Activation(activation_func))
+    model.add(Dropout(0.5))
+    model.add(Dense(1, activation='sigmoid'))
+
+    return model
+
+for experiment in experiments:
+    activation_func = experiment['activation']
+    optimizer = experiment['optimizer']
+    print(f"Running experiment with Activation: {activation_func}, Optimizer: {optimizer}")
+
+    # Build the model
+    model = build_cnn_model(activation_func=activation_func, optimizer=optimizer)
+
+    # Compile the model
+    model.compile(loss='binary_crossentropy',
+                  optimizer=optimizer,
+                  metrics=['accuracy'])
+
+    print(f"Model for Activation: {activation_func}, Optimizer: {optimizer} built and compiled.")
+------------------
+
+----- stdout -----
+Running experiment with Activation: relu, Optimizer: adam
+WARNING:tensorflow:From C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\keras\src\backend.py:873: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+----- stdout -----
+WARNING:tensorflow:From C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\keras\src\layers\pooling\max_pooling2d.py:161: The name tf.nn.max_pool is deprecated. Please use tf.nn.max_pool2d instead.
+----- stdout -----
+WARNING:tensorflow:From C:\Users\User\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\keras\src\optimizers\__init__.py:309: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+----- stdout -----
+Model for Activation: relu, Optimizer: adam built and compiled.
+Running experiment with Activation: tanh, Optimizer: sgd
+Model for Activation: tanh, Optimizer: sgd built and compiled.
+Running experiment with Activation: leakyrelu, Optimizer: rmsprop
+------------------
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [1;32mIn[11], line 46[0m
+[0;32m     43[0m [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mRunning experiment with Activation: [39m[38;5;132;01m{[39;00mactivation_func[38;5;132;01m}[39;00m[38;5;124m, Optimizer: [39m[38;5;132;01m{[39;00moptimizer[38;5;132;01m}[39;00m[38;5;124m"[39m)
+[0;32m     45[0m [38;5;66;03m# Build the model[39;00m
+[1;32m---> 46[0m model [38;5;241m=[39m [43mbuild_cnn_model[49m[43m([49m[43mactivation_func[49m[38;5;241;43m=[39;49m[43mactivation_func[49m[43m,[49m[43m [49m[43moptimizer[49m[38;5;241;43m=[39;49m[43moptimizer[49m[43m)[49m
+[0;32m     48[0m [38;5;66;03m# Compile the model[39;00m
+[0;32m     49[0m model[38;5;241m.[39mcompile(loss[38;5;241m=[39m[38;5;124m'[39m[38;5;124mbinary_crossentropy[39m[38;5;124m'[39m,
+[0;32m     50[0m               optimizer[38;5;241m=[39moptimizer,
+[0;32m     51[0m               metrics[38;5;241m=[39m[[38;5;124m'[39m[38;5;124maccuracy[39m[38;5;124m'[39m])
+
+Cell [1;32mIn[11], line 18[0m, in [0;36mbuild_cnn_model[1;34m(activation_func, optimizer)[0m
+[0;32m     16[0m model[38;5;241m.[39madd(Conv2D([38;5;241m32[39m, ([38;5;241m3[39m, [38;5;241m3[39m), input_shape[38;5;241m=[39m(img_height, img_width, [38;5;241m3[39m)))
+[0;32m     17[0m [38;5;28;01mif[39;00m activation_func [38;5;241m==[39m [38;5;124m'[39m[38;5;124mleakyrelu[39m[38;5;124m'[39m:
+[1;32m---> 18[0m     model[38;5;241m.[39madd([43mLeakyReLU[49m[43m([49m[43mnegative_slope[49m[38;5;241;43m=[39;49m[38;5;241;43m0.01[39;49m[43m)[49m)
+[0;32m     19[0m [38;5;28;01melse[39;00m:
+[0;32m     20[0m     model[38;5;241m.[39madd(tf[38;5;241m.[39mkeras[38;5;241m.[39mlayers[38;5;241m.[39mActivation(activation_func))
+
+File [1;32m~\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\keras\src\layers\activation\leaky_relu.py:62[0m, in [0;36mLeakyReLU.__init__[1;34m(self, alpha, **kwargs)[0m
+[0;32m     61[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21m__init__[39m([38;5;28mself[39m, alpha[38;5;241m=[39m[38;5;241m0.3[39m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[1;32m---> 62[0m     [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__init__[39;49m[43m([49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+[0;32m     63[0m     [38;5;28;01mif[39;00m alpha [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[0;32m     64[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[0;32m     65[0m             [38;5;124m"[39m[38;5;124mThe alpha value of a Leaky ReLU layer cannot be None, [39m[38;5;124m"[39m
+[0;32m     66[0m             [38;5;124mf[39m[38;5;124m"[39m[38;5;124mExpecting a float. Received: [39m[38;5;132;01m{[39;00malpha[38;5;132;01m}[39;00m[38;5;124m"[39m
+[0;32m     67[0m         )
+
+File [1;32m~\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\tensorflow\python\trackable\base.py:204[0m, in [0;36mno_automatic_dependency_tracking.<locals>._method_wrapper[1;34m(self, *args, **kwargs)[0m
+[0;32m    202[0m [38;5;28mself[39m[38;5;241m.[39m_self_setattr_tracking [38;5;241m=[39m [38;5;28;01mFalse[39;00m  [38;5;66;03m# pylint: disable=protected-access[39;00m
+[0;32m    203[0m [38;5;28;01mtry[39;00m:
+[1;32m--> 204[0m   result [38;5;241m=[39m [43mmethod[49m[43m([49m[38;5;28;43mself[39;49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+[0;32m    205[0m [38;5;28;01mfinally[39;00m:
+[0;32m    206[0m   [38;5;28mself[39m[38;5;241m.[39m_self_setattr_tracking [38;5;241m=[39m previous_value  [38;5;66;03m# pylint: disable=protected-access[39;00m
+
+File [1;32m~\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\keras\src\engine\base_layer.py:340[0m, in [0;36mLayer.__init__[1;34m(self, trainable, name, dtype, dynamic, **kwargs)[0m
+[0;32m    329[0m allowed_kwargs [38;5;241m=[39m {
+[0;32m    330[0m     [38;5;124m"[39m[38;5;124minput_dim[39m[38;5;124m"[39m,
+[0;32m    331[0m     [38;5;124m"[39m[38;5;124minput_shape[39m[38;5;124m"[39m,
+[1;32m   (...)[0m
+[0;32m    337[0m     [38;5;124m"[39m[38;5;124mimplementation[39m[38;5;124m"[39m,
+[0;32m    338[0m }
+[0;32m    339[0m [38;5;66;03m# Validate optional keyword arguments.[39;00m
+[1;32m--> 340[0m [43mgeneric_utils[49m[38;5;241;43m.[39;49m[43mvalidate_kwargs[49m[43m([49m[43mkwargs[49m[43m,[49m[43m [49m[43mallowed_kwargs[49m[43m)[49m
+[0;32m    342[0m [38;5;66;03m# Mutable properties[39;00m
+[0;32m    343[0m [38;5;66;03m# Indicates whether the layer's weights are updated during training[39;00m
+[0;32m    344[0m [38;5;66;03m# and whether the layer's updates are run during training.[39;00m
+[0;32m    345[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m (
+[0;32m    346[0m     [38;5;28misinstance[39m(trainable, [38;5;28mbool[39m)
+[0;32m    347[0m     [38;5;129;01mor[39;00m (
+[1;32m   (...)[0m
+[0;32m    350[0m     )
+[0;32m    351[0m ):
+
+File [1;32m~\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\keras\src\utils\generic_utils.py:514[0m, in [0;36mvalidate_kwargs[1;34m(kwargs, allowed_kwargs, error_message)[0m
+[0;32m    512[0m [38;5;28;01mfor[39;00m kwarg [38;5;129;01min[39;00m kwargs:
+[0;32m    513[0m     [38;5;28;01mif[39;00m kwarg [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m allowed_kwargs:
+[1;32m--> 514[0m         [38;5;28;01mraise[39;00m [38;5;167;01mTypeError[39;00m(error_message, kwarg)
+
+[1;31mTypeError[0m: ('Keyword argument not understood:', 'negative_slope')
+

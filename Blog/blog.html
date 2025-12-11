@@ -1,0 +1,878 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST &#8212; Deep Learning Portfolio</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=de014116" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Blog/blog';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Exploratory Data Analysis" href="../Project/EDA_Pulmoscope.html" />
+    <link rel="prev" title="Laboratory Task 7" href="../Laboratories/laboratory7.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Deep Learning Portfolio</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Lectures/lecture1.html"><strong>Lecture Task 1</strong></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Laboratories</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory1.html">Laboratory Task 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory2.html">Laboratory Task 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory3.html">Laboratory Task 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory4.html">Laboratory Task 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory5.html">Laboratory Task 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory6.html">Laboratory Task 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Laboratories/laboratory7.html">Laboratory Task 7</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</strong></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Project/EDA_Pulmoscope.html"><strong>Exploratory Data Analysis</strong></a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../Project/PulmoScope.html"><strong>PulmoScope</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Blog/blog.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-learning-rate">What Is Learning Rate?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#theoretical-effects-on-training">Theoretical Effects on Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-design">Experiment Design</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-learning-rate-experiment-on-mnist-pytorch">Code: Learning Rate Experiment on MNIST (PyTorch)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-interpretation">Results Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insights-for-future-model-tuning">Insights for Future Model Tuning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insights-for-future-modeling">Insights for Future Modeling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tuning-the-step-size-of-learning-a-practical-exploration-of-learning-rate-on-mnist">
+<h1><strong>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</strong><a class="headerlink" href="#tuning-the-step-size-of-learning-a-practical-exploration-of-learning-rate-on-mnist" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The learning rate is one of the most important hyperparameters in training deep neural networks because it directly controls how fast a model updates its weights while minimizing the loss function.  Choosing a value that is too high can cause training to diverge, while a value that is too low can make learning painfully slow or get stuck in poor local minima.</p>
+</section>
+<hr class="docutils" />
+<section id="what-is-learning-rate">
+<h2>What Is Learning Rate?<a class="headerlink" href="#what-is-learning-rate" title="Link to this heading">#</a></h2>
+<p>In gradient-based optimization, the model parameters <span class="math notranslate nohighlight">\(\theta\)</span> are updated iteratively using an update rule such as <span class="math notranslate nohighlight">\(\theta_{t+1} = \theta_t - \eta \nabla_{\theta} \mathcal{L}(\theta_t),\)</span> where <span class="math notranslate nohighlight">\(\eta\)</span> is the learning rate and <span class="math notranslate nohighlight">\(\nabla_{\theta} \mathcal{L}(\theta_t)\)</span> is the gradient of the loss with respect to the parameters at step <span class="math notranslate nohighlight">\(t\)</span>.  The learning rate <span class="math notranslate nohighlight">\(\eta\)</span> therefore acts as a step size that determines how large each move is along the negative gradient direction.</p>
+<p>Conceptually, a high learning rate can speed up convergence but risks overshooting minima, while a low learning rate typically yields smoother, more stable learning trajectories at the cost of longer training time.  Many practical deep learning guides recommend starting with values around <span class="math notranslate nohighlight">\(10^{-2}\)</span> or <span class="math notranslate nohighlight">\(10^{-3}\)</span> and then adjusting based on observed loss curves or using adaptive methods.</p>
+</section>
+<hr class="docutils" />
+<section id="theoretical-effects-on-training">
+<h2>Theoretical Effects on Training<a class="headerlink" href="#theoretical-effects-on-training" title="Link to this heading">#</a></h2>
+<p>From an optimization perspective, the learning rate trades off convergence speed and stability.  If <span class="math notranslate nohighlight">\(\eta\)</span> is too large, the updates can bounce around the loss landscape without settling, leading to oscillations or divergence; if <span class="math notranslate nohighlight">\(\eta\)</span> is too small, updates may barely move, and the model can require many epochs or even fail to escape plateaus.</p>
+<p>The learning rate also affects generalization.  Larger values may converge quickly but can land in sharp minima that sometimes generalize poorly, while more moderate or scheduled rates can help reach flatter regions that often correlate with better test performance.  This is one reason why learning rate schedules and adaptive optimizers (such as Adam) are widely used in modern deep learning practice.</p>
+</section>
+<hr class="docutils" />
+<section id="experiment-design">
+<h2>Experiment Design<a class="headerlink" href="#experiment-design" title="Link to this heading">#</a></h2>
+<p>To visualize the impact of different learning rates, this experiment trains the same convolutional neural network (CNN) on the MNIST digit classification task with several fixed learning rate values.  The independent variable is the learning rate, while the dependent variables are training loss, validation loss, training accuracy, validation accuracy, and total training time per run.</p>
+<p><strong>Setup overview:</strong></p>
+<ul class="simple">
+<li><p>Dataset: MNIST handwritten digits (60,000 train, 10,000 test).[8]</p></li>
+<li><p>Model: Simple CNN with two convolutional layers and two fully connected layers.</p></li>
+<li><p>Optimizer: Adam with learning rates <span class="math notranslate nohighlight">\(\eta \in \{0.0001, 0.001, 0.01\}\)</span>.</p></li>
+<li><p>Epochs: 10–15 (you can adjust).</p></li>
+<li><p>Batch size: 128.</p></li>
+</ul>
+<p>The expectation is that an extremely small learning rate (0.0001) will converge slowly, a moderate rate (0.001) will balance speed and stability, and a relatively high rate (0.01) may show unstable loss or poorer final accuracy.</p>
+</section>
+<hr class="docutils" />
+<section id="code-learning-rate-experiment-on-mnist-pytorch">
+<h2>Code: Learning Rate Experiment on MNIST (PyTorch)<a class="headerlink" href="#code-learning-rate-experiment-on-mnist-pytorch" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Experiment: Effect of learning rate on CNN training using MNIST (PyTorch)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using device:&quot;</span><span class="p">,</span> <span class="n">DEVICE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using device: cpu
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.1307</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.3081</span><span class="p">,))</span>
+<span class="p">])</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">test_dataset</span>  <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_loader</span>  <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 9.91M/9.91M [00:00&lt;00:00, 18.0MB/s]
+100%|██████████| 28.9k/28.9k [00:00&lt;00:00, 481kB/s]
+100%|██████████| 1.65M/1.65M [00:00&lt;00:00, 4.40MB/s]
+100%|██████████| 4.54k/4.54k [00:00&lt;00:00, 9.73MB/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SimpleCNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleCNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>  <span class="c1"># 28x28 -&gt; 14x14</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>  <span class="c1"># 14x14 -&gt; 7x7</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_one_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+        <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">images</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="n">running_loss</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="n">epoch_acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="k">return</span> <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">images</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="n">running_loss</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="n">epoch_acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="k">return</span> <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">learning_rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">]</span>
+<span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">learning_rates</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Training with learning rate = </span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2"> ===&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">SimpleCNN</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+    <span class="n">train_losses</span><span class="p">,</span> <span class="n">val_losses</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">train_accs</span><span class="p">,</span> <span class="n">val_accs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_acc</span> <span class="o">=</span> <span class="n">train_one_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">)</span>
+        <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
+
+        <span class="n">train_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+        <span class="n">val_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+        <span class="n">train_accs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+        <span class="n">val_accs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;LR=</span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2"> | Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s2">] &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Train Acc: </span><span class="si">{</span><span class="n">train_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Val Loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Val Acc: </span><span class="si">{</span><span class="n">val_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;train_losses&quot;</span><span class="p">:</span> <span class="n">train_losses</span><span class="p">,</span>
+        <span class="s2">&quot;val_losses&quot;</span><span class="p">:</span> <span class="n">val_losses</span><span class="p">,</span>
+        <span class="s2">&quot;train_accs&quot;</span><span class="p">:</span> <span class="n">train_accs</span><span class="p">,</span>
+        <span class="s2">&quot;val_accs&quot;</span><span class="p">:</span> <span class="n">val_accs</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">elapsed</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Training with learning rate = 0.0001 ===
+LR=0.0001 | Epoch [1/10] Train Loss: 0.6898, Train Acc: 0.8057 Val Loss: 0.1886, Val Acc: 0.9451
+LR=0.0001 | Epoch [2/10] Train Loss: 0.2320, Train Acc: 0.9326 Val Loss: 0.1108, Val Acc: 0.9648
+LR=0.0001 | Epoch [3/10] Train Loss: 0.1623, Train Acc: 0.9530 Val Loss: 0.0805, Val Acc: 0.9737
+LR=0.0001 | Epoch [4/10] Train Loss: 0.1286, Train Acc: 0.9627 Val Loss: 0.0655, Val Acc: 0.9788
+LR=0.0001 | Epoch [5/10] Train Loss: 0.1081, Train Acc: 0.9685 Val Loss: 0.0562, Val Acc: 0.9807
+LR=0.0001 | Epoch [6/10] Train Loss: 0.0939, Train Acc: 0.9725 Val Loss: 0.0502, Val Acc: 0.9828
+LR=0.0001 | Epoch [7/10] Train Loss: 0.0854, Train Acc: 0.9749 Val Loss: 0.0433, Val Acc: 0.9852
+LR=0.0001 | Epoch [8/10] Train Loss: 0.0760, Train Acc: 0.9783 Val Loss: 0.0411, Val Acc: 0.9860
+LR=0.0001 | Epoch [9/10] Train Loss: 0.0702, Train Acc: 0.9787 Val Loss: 0.0386, Val Acc: 0.9867
+LR=0.0001 | Epoch [10/10] Train Loss: 0.0643, Train Acc: 0.9806 Val Loss: 0.0384, Val Acc: 0.9870
+
+=== Training with learning rate = 0.001 ===
+LR=0.001 | Epoch [1/10] Train Loss: 0.2370, Train Acc: 0.9268 Val Loss: 0.0527, Val Acc: 0.9823
+LR=0.001 | Epoch [2/10] Train Loss: 0.0818, Train Acc: 0.9755 Val Loss: 0.0362, Val Acc: 0.9884
+LR=0.001 | Epoch [3/10] Train Loss: 0.0622, Train Acc: 0.9815 Val Loss: 0.0290, Val Acc: 0.9902
+LR=0.001 | Epoch [4/10] Train Loss: 0.0490, Train Acc: 0.9852 Val Loss: 0.0261, Val Acc: 0.9915
+LR=0.001 | Epoch [5/10] Train Loss: 0.0439, Train Acc: 0.9866 Val Loss: 0.0259, Val Acc: 0.9907
+LR=0.001 | Epoch [6/10] Train Loss: 0.0359, Train Acc: 0.9893 Val Loss: 0.0293, Val Acc: 0.9912
+LR=0.001 | Epoch [7/10] Train Loss: 0.0336, Train Acc: 0.9891 Val Loss: 0.0242, Val Acc: 0.9925
+LR=0.001 | Epoch [8/10] Train Loss: 0.0280, Train Acc: 0.9911 Val Loss: 0.0244, Val Acc: 0.9928
+LR=0.001 | Epoch [9/10] Train Loss: 0.0252, Train Acc: 0.9920 Val Loss: 0.0258, Val Acc: 0.9934
+LR=0.001 | Epoch [10/10] Train Loss: 0.0244, Train Acc: 0.9922 Val Loss: 0.0269, Val Acc: 0.9924
+
+=== Training with learning rate = 0.01 ===
+LR=0.01 | Epoch [1/10] Train Loss: 0.2834, Train Acc: 0.9149 Val Loss: 0.0778, Val Acc: 0.9769
+LR=0.01 | Epoch [2/10] Train Loss: 0.1447, Train Acc: 0.9578 Val Loss: 0.0696, Val Acc: 0.9791
+LR=0.01 | Epoch [3/10] Train Loss: 0.1285, Train Acc: 0.9617 Val Loss: 0.0776, Val Acc: 0.9752
+LR=0.01 | Epoch [4/10] Train Loss: 0.1210, Train Acc: 0.9651 Val Loss: 0.0680, Val Acc: 0.9780
+LR=0.01 | Epoch [5/10] Train Loss: 0.1160, Train Acc: 0.9658 Val Loss: 0.0692, Val Acc: 0.9795
+LR=0.01 | Epoch [6/10] Train Loss: 0.1166, Train Acc: 0.9662 Val Loss: 0.0678, Val Acc: 0.9787
+LR=0.01 | Epoch [7/10] Train Loss: 0.1105, Train Acc: 0.9663 Val Loss: 0.0751, Val Acc: 0.9769
+LR=0.01 | Epoch [8/10] Train Loss: 0.1082, Train Acc: 0.9683 Val Loss: 0.0726, Val Acc: 0.9780
+LR=0.01 | Epoch [9/10] Train Loss: 0.1056, Train Acc: 0.9698 Val Loss: 0.0533, Val Acc: 0.9843
+LR=0.01 | Epoch [10/10] Train Loss: 0.1041, Train Acc: 0.9698 Val Loss: 0.0635, Val Acc: 0.9810
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">epochs_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1"># Loss curves</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">learning_rates</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs_range</span><span class="p">,</span> <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s2">&quot;train_losses&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Train LR=</span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs_range</span><span class="p">,</span> <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s2">&quot;val_losses&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Val LR=</span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Training &amp; Validation Loss vs Epochs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7865bf1e76e0&gt;
+</pre></div>
+</div>
+<img alt="../_images/93db0f56c6e7996e728ccf0406ae577ae01f3803b2c6e841441bd01191c37c50.png" src="../_images/93db0f56c6e7996e728ccf0406ae577ae01f3803b2c6e841441bd01191c37c50.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Accuracy curves</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">learning_rates</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs_range</span><span class="p">,</span> <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s2">&quot;train_accs&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Train LR=</span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs_range</span><span class="p">,</span> <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s2">&quot;val_accs&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Val LR=</span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Training &amp; Validation Accuracy vs Epochs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ee0c30924dfc77ad47b03fc48ec69686440a13e899125b88b1ad9393ec91a947.png" src="../_images/ee0c30924dfc77ad47b03fc48ec69686440a13e899125b88b1ad9393ec91a947.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">learning_rates</span><span class="p">:</span>
+    <span class="n">final_val_acc</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s2">&quot;val_accs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">final_val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s2">&quot;val_losses&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LR=</span><span class="si">{</span><span class="n">lr</span><span class="si">}</span><span class="s2">: Final Val Acc=</span><span class="si">{</span><span class="n">final_val_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Final Val Loss=</span><span class="si">{</span><span class="n">final_val_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Time=</span><span class="si">{</span><span class="n">history</span><span class="p">[</span><span class="n">lr</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LR=0.0001: Final Val Acc=0.9870, Final Val Loss=0.0384, Time=850.94s
+LR=0.001: Final Val Acc=0.9924, Final Val Loss=0.0269, Time=845.30s
+LR=0.01: Final Val Acc=0.9810, Final Val Loss=0.0635, Time=850.02s
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results-interpretation">
+<h2>Results Interpretation<a class="headerlink" href="#results-interpretation" title="Link to this heading">#</a></h2>
+<p><strong>Effect of Learning Rate on Model Performance</strong></p>
+<p>We trained a simple CNN on the MNIST dataset using three learning rates: 0.0001, 0.001, and 0.01. The results clearly illustrate the influence of the learning rate hyperparameter on both convergence speed and final test accuracy—a pattern echoed in other MNIST learning rate experiments.</p>
+<p><strong>Learning Rate = 0.0001:</strong><br />
+The model showed slow and steady improvement. Both training and validation accuracy curves rose gradually, requiring more epochs to approach high accuracy. Ultimately, this rate produced a high accuracy (e.g., 98.7%) but took the longest to converge, confirming that a very small learning rate can stall learning and increase training time.</p>
+<p><strong>Learning Rate = 0.001:</strong><br />
+This moderate value led to the best results. Accuracy increased quickly within the first few epochs and plateaued near 99%, while the loss fell rapidly and stabilized. This aligns with best-practice recommendations in the literature: starting with a moderate learning rate yields a strong balance between speed, stability, and generalization—the model reached the highest test accuracy and lowest test loss in the fewest epochs.</p>
+<p><strong>Learning Rate = 0.01:</strong><br />
+With this higher value, learning was initially rapid, but the validation accuracy fluctuated and ultimately plateaued at a lower level than for 0.001. While a high learning rate can accelerate early learning, it may also cause training instability, overshooting, or settling into suboptimal minima, resulting in lower generalization as reflected by higher final test loss and lower accuracy.</p>
+<p><strong>Qualitative Takeaways:</strong></p>
+<ul class="simple">
+<li><p><em>Very small learning rates</em> (e.g., 0.0001) result in slow convergence and require more epochs for strong performance.</p></li>
+<li><p><em>Moderate learning rates</em> (e.g., 0.001) offer the best speed-to-quality ratio, converging quickly to high accuracy.</p></li>
+<li><p><em>High learning rates</em> (e.g., 0.01 or higher) may appear effective early but risk instability and worse generalization if not tuned carefully.</p></li>
+</ul>
+<p>These patterns support findings in published experiments, such as those documented in WANDB reports and Kaggle projects, where optimal performance on MNIST is regularly achieved with learning rates around 0.001 to 0.005 when using optimizers like Adam or SGD. Careful tuning and visualization—using loss and accuracy curves—remain the most effective approach to optimizing this key parameter.</p>
+</section>
+<hr class="docutils" />
+<section id="insights-for-future-model-tuning">
+<h2>Insights for Future Model Tuning<a class="headerlink" href="#insights-for-future-model-tuning" title="Link to this heading">#</a></h2>
+<section id="insights-for-future-modeling">
+<h3>Insights for Future Modeling<a class="headerlink" href="#insights-for-future-modeling" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Start with Moderate Learning Rates:</strong><br />
+Your experiments and the literature consistently show that moderate learning rates (like 0.001 for Adam) provide a strong balance of convergence speed and accuracy. Beginning here allows quick progress—then you can fine-tune up or down if loss curves suggest under- or overshooting.</p></li>
+<li><p><strong>Monitor Both Loss and Accuracy Curves:</strong><br />
+Plotting these metrics gives fast feedback: slow, steady gains often mean the rate is too low; erratic or plateauing curves can signal an overly high rate or instability. Use these plots routinely during development.[6][1]</p></li>
+<li><p><strong>Combine with Regularization:</strong><br />
+Techniques like dropout are especially helpful on small or straightforward datasets like MNIST, helping the model generalize and not overfit even with efficient learning rates. Many top-performing models combine good learning rate schedules with well-chosen regularization.</p></li>
+<li><p><strong>Consider Model Complexity vs. Deployment Needs:</strong><br />
+In practical applications, highly accurate deep models (CNNs, GANs, Capsule Networks) routinely outperform older shallow approaches (like decision trees) on MNIST and related datasets. However, consider model size and computational requirements if deploying on limited hardware—certain architectures may be overkill or too resource-intensive for real-world systems.</p></li>
+<li><p><strong>Leverage Modern Architectures When Needed:</strong><br />
+For very high accuracy or more complex datasets, architectures such as ResNet, DenseNet, or Capsule Networks demonstrate clear benefits in published experiments, sometimes reaching 99.5%+ accuracy on MNIST. But for educational and portfolio purposes, a simple CNN is often sufficient and much easier to interpret.</p></li>
+<li><p><strong>Iterative Hyperparameter Tuning:</strong><br />
+Once you select a baseline (model + optimizer + initial learning rate), iterate:</p>
+<ul class="simple">
+<li><p>Try small changes (e.g., test learning rate in log-scale steps: 0.0001, 0.001, 0.005, etc.).</p></li>
+<li><p>Use simple early stopping based on validation loss to avoid unnecessary training.</p></li>
+<li><p>If accuracy is already high but you want further gains, experiment with data augmentation or ensembling.</p></li>
+</ul>
+</li>
+<li><p><strong>Baseline and Benchmark:</strong><br />
+Always compare your method against published baseline results to verify that your model is learning as expected for a given task. Tools like transfer learning or modular MNIST-style dataset generators can help expand your experiments or target new domains.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://www.ibm.com/think/topics/learning-rate">1</a>
+<a class="reference external" href="https://www.machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/">2</a>
+<a class="reference external" href="https://arxiv.org/html/2507.21749v1">3</a>
+<a class="reference external" href="https://milvus.io/ai-quick-reference/how-do-learning-rates-affect-deep-learning-models">4</a>
+<a class="reference external" href="https://www.deeplearningbook.org">5</a>
+<a class="reference external" href="https://www.datacamp.com/tutorial/tutorial-deep-learning-tutorial">6</a>
+<a class="reference external" href="https://elib.uni-stuttgart.de/bitstreams/84fad195-08b0-45d6-856a-e1eb8aeb1f38/download">7</a>
+<a class="reference external" href="https://thesai.org/Downloads/Volume12No8/Paper_85-The_Effect_of_Adaptive_Learning_Rate.pdf">8</a>
+<a class="reference external" href="https://akanshasaxena.com/challenge/deep-learning/day-3/">9</a>
+<a class="reference external" href="https://wandb.ai/Shilpa09/MLOps2025_g24ait109/reports/Impact-of-Learning-Rate-on-Model-Performance--VmlldzoxMTMzNjI3Mw">10</a>
+<a class="reference external" href="https://www.bibsonomy.org/bibtex/2175f81afff897a68829e4d30c080a8fb/hotho">11</a>
+<a class="reference external" href="https://www.easybib.com/guides/citation-guides/books/deep-learning/">12</a>
+<a class="reference external" href="https://www.scribbr.com/citation/generator/apa/">13</a>
+<a class="reference external" href="https://www.geeksforgeeks.org/deep-learning/deep-learning-tutorial/">14</a>
+<a class="reference external" href="https://www.youtube.com/watch?v=L5QtLK_enoI">15</a>
+<a class="reference external" href="https://www.bibguru.com/b/how-to-cite-deep-learning/">16</a>
+<a class="reference external" href="https://www.coursera.org/articles/learning-rate-neural-network">17</a>
+<a class="reference external" href="https://stackoverflow.com/questions/73462206/why-do-i-need-a-very-high-learning-rate-for-this-model-to-converge">18</a>
+<a class="reference external" href="https://www.citationmachine.net/apa/cite-a-book">19</a>
+<a class="reference external" href="https://www.deepchecks.com/glossary/learning-rate-in-machine-learning/">20</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Blog"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../Laboratories/laboratory7.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Laboratory Task 7</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Project/EDA_Pulmoscope.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>Exploratory Data Analysis</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-learning-rate">What Is Learning Rate?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#theoretical-effects-on-training">Theoretical Effects on Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-design">Experiment Design</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-learning-rate-experiment-on-mnist-pytorch">Code: Learning Rate Experiment on MNIST (PyTorch)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-interpretation">Results Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#insights-for-future-model-tuning">Insights for Future Model Tuning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insights-for-future-modeling">Insights for Future Modeling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicole Menorias
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

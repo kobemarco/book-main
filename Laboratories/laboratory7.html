@@ -1,0 +1,1397 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Laboratory Task 7 &#8212; Deep Learning Portfolio</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=de014116" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Laboratories/laboratory7';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST" href="../Blog/blog.html" />
+    <link rel="prev" title="Laboratory Task 6" href="laboratory6.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Deep Learning Portfolio</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Lectures/lecture1.html"><strong>Lecture Task 1</strong></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Laboratories</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="laboratory1.html">Laboratory Task 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="laboratory2.html">Laboratory Task 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="laboratory3.html">Laboratory Task 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="laboratory4.html">Laboratory Task 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="laboratory5.html">Laboratory Task 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="laboratory6.html">Laboratory Task 6</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Laboratory Task 7</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Blog/blog.html"><strong>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</strong></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Project/EDA_Pulmoscope.html"><strong>Exploratory Data Analysis</strong></a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../Project/PulmoScope.html"><strong>PulmoScope</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Laboratories/laboratory7.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Laboratory Task 7</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratory-task-7">
+<h1>Laboratory Task 7<a class="headerlink" href="#laboratory-task-7" title="Link to this heading">#</a></h1>
+<p><strong>Exploring Hyperparameters (Activation Functions and Optimizers)</strong></p>
+<p>🎯 Objective</p>
+<p>In this lab, you will explore how different activation functions and optimizers affect the performance of a deep learning model. You will apply these hyperparameters to a custom image dataset of your choice and analyze how each configuration influences model training and accuracy.</p>
+<p><strong>Import Libraries</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">BatchNormalization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDataGenerator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Loading and exploring the data</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORTANT: RUN THIS CELL IN ORDER TO IMPORT YOUR KAGGLE DATA SOURCES,</span>
+<span class="c1"># THEN FEEL FREE TO DELETE THIS CELL.</span>
+<span class="c1"># NOTE: THIS NOTEBOOK ENVIRONMENT DIFFERS FROM KAGGLE&#39;S PYTHON</span>
+<span class="c1"># ENVIRONMENT SO THERE MAY BE MISSING LIBRARIES USED BY YOUR</span>
+<span class="c1"># NOTEBOOK.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">kagglehub</span>
+<span class="n">devbatrax_fracture_detection_using_x_ray_images_path</span> <span class="o">=</span> <span class="n">kagglehub</span><span class="o">.</span><span class="n">dataset_download</span><span class="p">(</span><span class="s1">&#39;devbatrax/fracture-detection-using-x-ray-images&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data source import complete.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading from https://www.kaggle.com/api/v1/datasets/download/devbatrax/fracture-detection-using-x-ray-images?dataset_version_number=1...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 172M/172M [00:00&lt;00:00, 230MB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting files...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data source import complete.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List the contents of the &#39;data&#39; directory to find the correct path</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">devbatrax_fracture_detection_using_x_ray_images_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">data_dir</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;val&#39;, &#39;train&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List the contents of the extracted dataset directory to find the correct path</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">devbatrax_fracture_detection_using_x_ray_images_path</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;data&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the base path to the extracted dataset</span>
+<span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">devbatrax_fracture_detection_using_x_ray_images_path</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create lists to store image paths and labels</span>
+<span class="n">image_paths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Define the class names</span>
+<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;not fractured&#39;</span><span class="p">,</span> <span class="s1">&#39;fractured&#39;</span><span class="p">]</span>
+
+<span class="c1"># Define the train and validation directories</span>
+<span class="n">train_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="n">val_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
+
+<span class="c1"># Iterate through the train and validation directories</span>
+<span class="k">for</span> <span class="n">data_type_dir</span> <span class="ow">in</span> <span class="p">[</span><span class="n">train_dir</span><span class="p">,</span> <span class="n">val_dir</span><span class="p">]:</span>
+    <span class="c1"># Iterate through the class subdirectories</span>
+    <span class="k">for</span> <span class="n">class_name</span> <span class="ow">in</span> <span class="n">class_names</span><span class="p">:</span>
+        <span class="n">class_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_type_dir</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
+        <span class="c1"># Iterate through the image files in each class directory</span>
+        <span class="k">for</span> <span class="n">img_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">class_dir</span><span class="p">):</span>
+            <span class="n">img_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">class_dir</span><span class="p">,</span> <span class="n">img_name</span><span class="p">)</span>
+            <span class="n">image_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">class_name</span><span class="p">)</span>
+
+<span class="c1"># Create a pandas DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">image_paths</span><span class="p">,</span> <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="n">labels</span><span class="p">})</span>
+
+<span class="c1"># Display the first few rows of the DataFrame</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Display the class distribution</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-a26f4ae0-241b-4c54-b17d-397031321567" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>path</th>
+      <th>class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>/root/.cache/kagglehub/datasets/devbatrax/frac...</td>
+      <td>not fractured</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>/root/.cache/kagglehub/datasets/devbatrax/frac...</td>
+      <td>not fractured</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>/root/.cache/kagglehub/datasets/devbatrax/frac...</td>
+      <td>not fractured</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>/root/.cache/kagglehub/datasets/devbatrax/frac...</td>
+      <td>not fractured</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>/root/.cache/kagglehub/datasets/devbatrax/frac...</td>
+      <td>not fractured</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-a26f4ae0-241b-4c54-b17d-397031321567')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-a26f4ae0-241b-4c54-b17d-397031321567 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-a26f4ae0-241b-4c54-b17d-397031321567');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+    <div id="df-a0eae443-bbaf-4396-9d6e-227a680d88ea">
+      <button class="colab-df-quickchart" onclick="quickchart('df-a0eae443-bbaf-4396-9d6e-227a680d88ea')"
+                title="Suggest charts"
+                style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+      </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+      <script>
+        async function quickchart(key) {
+          const quickchartButtonEl =
+            document.querySelector('#' + key + ' button');
+          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+          quickchartButtonEl.classList.add('colab-df-spinner');
+          try {
+            const charts = await google.colab.kernel.invokeFunction(
+                'suggestCharts', [key], {});
+          } catch (error) {
+            console.error('Error during call to suggestCharts:', error);
+          }
+          quickchartButtonEl.classList.remove('colab-df-spinner');
+          quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+        }
+        (() => {
+          let quickchartButtonEl =
+            document.querySelector('#df-a0eae443-bbaf-4396-9d6e-227a680d88ea button');
+          quickchartButtonEl.style.display =
+            google.colab.kernel.accessAllowed ? 'block' : 'none';
+        })();
+      </script>
+    </div>
+
+    </div>
+  </div>
+</div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+    </tr>
+    <tr>
+      <th>class</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>fractured</th>
+      <td>4840</td>
+    </tr>
+    <tr>
+      <th>not fractured</th>
+      <td>4623</td>
+    </tr>
+  </tbody>
+</table>
+</div><br><label><b>dtype:</b> int64</label></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1"># Split the data into training and validation sets</span>
+<span class="n">train_df</span><span class="p">,</span> <span class="n">val_df</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">])</span>
+
+<span class="c1"># Display the shape of the training and validation DataFrames</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training data shape:&quot;</span><span class="p">,</span> <span class="n">train_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation data shape:&quot;</span><span class="p">,</span> <span class="n">val_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># Define image dimensions</span>
+<span class="n">img_height</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">img_width</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="c1"># Create ImageDataGenerator for training data with augmentation</span>
+<span class="n">train_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span>
+    <span class="n">rescale</span><span class="o">=</span><span class="mf">1.</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span>
+    <span class="n">rotation_range</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">shear_range</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">zoom_range</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">horizontal_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fill_mode</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Create ImageDataGenerator for validation data (only rescaling)</span>
+<span class="n">val_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">rescale</span><span class="o">=</span><span class="mf">1.</span><span class="o">/</span><span class="mi">255</span><span class="p">)</span>
+
+<span class="c1"># Create data generators from DataFrame</span>
+<span class="n">train_generator</span> <span class="o">=</span> <span class="n">train_datagen</span><span class="o">.</span><span class="n">flow_from_dataframe</span><span class="p">(</span>
+    <span class="n">train_df</span><span class="p">,</span>
+    <span class="n">x_col</span><span class="o">=</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+    <span class="n">y_col</span><span class="o">=</span><span class="s1">&#39;class&#39;</span><span class="p">,</span>
+    <span class="n">target_size</span><span class="o">=</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">),</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">class_mode</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span>
+<span class="p">)</span>
+
+<span class="n">val_generator</span> <span class="o">=</span> <span class="n">val_datagen</span><span class="o">.</span><span class="n">flow_from_dataframe</span><span class="p">(</span>
+    <span class="n">val_df</span><span class="p">,</span>
+    <span class="n">x_col</span><span class="o">=</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+    <span class="n">y_col</span><span class="o">=</span><span class="s1">&#39;class&#39;</span><span class="p">,</span>
+    <span class="n">target_size</span><span class="o">=</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">),</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">class_mode</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Display the class indices</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class indices:&quot;</span><span class="p">,</span> <span class="n">train_generator</span><span class="o">.</span><span class="n">class_indices</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training data shape: (7570, 2)
+Validation data shape: (1893, 2)
+Found 7570 validated image filenames belonging to 2 classes.
+Found 1893 validated image filenames belonging to 2 classes.
+Class indices: {&#39;fractured&#39;: 0, &#39;not fractured&#39;: 1}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a batch of images and labels from the training generator</span>
+<span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">train_generator</span><span class="p">)</span>
+
+<span class="c1"># Display the first few images from the batch</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Label: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e2113f8e89d4df43d346763ed79b0ae4e1c628548321d8e992541ce0bfd9a842.png" src="../_images/e2113f8e89d4df43d346763ed79b0ae4e1c628548321d8e992541ce0bfd9a842.png" />
+</div>
+</div>
+<p><strong>Define the base cnn model architecture</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_cnn_model</span><span class="p">(</span><span class="n">activation_func</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds a simple CNN model for image classification with flexible activation</span>
+<span class="sd">    functions and optimizers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        activation_func (str): The activation function to use in hidden layers.</span>
+<span class="sd">        optimizer (str): The optimizer to use for compiling the model.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tensorflow.keras.models.Sequential: The built CNN model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">([</span>
+        <span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation_func</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+        <span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation_func</span><span class="p">),</span>
+        <span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+        <span class="n">Flatten</span><span class="p">(),</span>
+        <span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation_func</span><span class="p">),</span>
+        <span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Set up experiment combinations</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experiments</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="s1">&#39;tanh&#39;</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;sgd&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="s1">&#39;leakyrelu&#39;</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;rmsprop&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="s1">&#39;elu&#39;</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;adagrad&#39;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">experiments</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;activation&#39;: &#39;relu&#39;, &#39;optimizer&#39;: &#39;adam&#39;}, {&#39;activation&#39;: &#39;tanh&#39;, &#39;optimizer&#39;: &#39;sgd&#39;}, {&#39;activation&#39;: &#39;leakyrelu&#39;, &#39;optimizer&#39;: &#39;rmsprop&#39;}, {&#39;activation&#39;: &#39;elu&#39;, &#39;optimizer&#39;: &#39;adagrad&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Iterate through experiments</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+    <span class="n">activation_func</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[</span><span class="s1">&#39;activation&#39;</span><span class="p">]</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running experiment with Activation: </span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">, Optimizer: </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment with Activation: relu, Optimizer: adam
+Running experiment with Activation: tanh, Optimizer: sgd
+Running experiment with Activation: leakyrelu, Optimizer: rmsprop
+Running experiment with Activation: elu, Optimizer: adagrad
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Build and compile the model</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">LeakyReLU</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_cnn_model</span><span class="p">(</span><span class="n">activation_func</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds a simple CNN model for image classification with flexible activation</span>
+<span class="sd">    functions and optimizers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        activation_func (str): The activation function to use in hidden layers.</span>
+<span class="sd">        optimizer (str): The optimizer to use for compiling the model.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tensorflow.keras.models.Sequential: The built CNN model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">activation_func</span> <span class="o">==</span> <span class="s1">&#39;leakyrelu&#39;</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.01</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">activation_func</span><span class="p">))</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">activation_func</span> <span class="o">==</span> <span class="s1">&#39;leakyrelu&#39;</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.01</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">activation_func</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">activation_func</span> <span class="o">==</span> <span class="s1">&#39;leakyrelu&#39;</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.01</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">activation_func</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+    <span class="n">activation_func</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[</span><span class="s1">&#39;activation&#39;</span><span class="p">]</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running experiment with Activation: </span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">, Optimizer: </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Build the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">build_cnn_model</span><span class="p">(</span><span class="n">activation_func</span><span class="o">=</span><span class="n">activation_func</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">)</span>
+
+    <span class="c1"># Compile the model</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
+                  <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model for Activation: </span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">, Optimizer: </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2"> built and compiled.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment with Activation: relu, Optimizer: adam
+Model for Activation: relu, Optimizer: adam built and compiled.
+Running experiment with Activation: tanh, Optimizer: sgd
+Model for Activation: tanh, Optimizer: sgd built and compiled.
+Running experiment with Activation: leakyrelu, Optimizer: rmsprop
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.12/dist-packages/keras/src/layers/convolutional/base_conv.py:113: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model for Activation: leakyrelu, Optimizer: rmsprop built and compiled.
+Running experiment with Activation: elu, Optimizer: adagrad
+Model for Activation: elu, Optimizer: adagrad built and compiled.
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Train the model</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+    <span class="n">activation_func</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[</span><span class="s1">&#39;activation&#39;</span><span class="p">]</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Running experiment with Activation: </span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">, Optimizer: </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Build the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">build_cnn_model</span><span class="p">(</span><span class="n">activation_func</span><span class="o">=</span><span class="n">activation_func</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">)</span>
+
+    <span class="c1"># Compile the model</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
+                  <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model for Activation: </span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">, Optimizer: </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2"> built and compiled.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Train the model</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+        <span class="n">train_generator</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+        <span class="n">validation_data</span><span class="o">=</span><span class="n">val_generator</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model training for Activation: </span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">, Optimizer: </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2"> completed.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Evaluate the model</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">val_generator</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation Loss: </span><span class="si">{</span><span class="n">loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Validation Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Store results</span>
+    <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;history&#39;</span><span class="p">:</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">,</span>
+        <span class="s1">&#39;validation_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span>
+        <span class="s1">&#39;validation_accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span>
+    <span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All experiments completed.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment with Activation: relu, Optimizer: adam
+Model for Activation: relu, Optimizer: adam built and compiled.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.12/dist-packages/keras/src/trainers/data_adapters/py_dataset_adapter.py:121: UserWarning: Your `PyDataset` class should call `super().__init__(**kwargs)` in its constructor. `**kwargs` can include `workers`, `use_multiprocessing`, `max_queue_size`. Do not pass these arguments to `fit()`, as they will be ignored.
+  self._warn_if_super_not_called()
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">46s</span> 172ms/step - accuracy: 0.5534 - loss: 0.6935 - val_accuracy: 0.6609 - val_loss: 0.6134
+Epoch 2/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">38s</span> 160ms/step - accuracy: 0.6288 - loss: 0.6226 - val_accuracy: 0.6830 - val_loss: 0.5808
+Epoch 3/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">38s</span> 159ms/step - accuracy: 0.6901 - loss: 0.5747 - val_accuracy: 0.7993 - val_loss: 0.4565
+Epoch 4/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.7547 - loss: 0.4939 - val_accuracy: 0.8426 - val_loss: 0.3913
+Epoch 5/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.7800 - loss: 0.4487 - val_accuracy: 0.8780 - val_loss: 0.3180
+Epoch 6/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.7989 - loss: 0.4147 - val_accuracy: 0.8790 - val_loss: 0.2971
+Epoch 7/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.8096 - loss: 0.3888 - val_accuracy: 0.8991 - val_loss: 0.2517
+Epoch 8/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.8457 - loss: 0.3423 - val_accuracy: 0.8642 - val_loss: 0.2995
+Epoch 9/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.8540 - loss: 0.3373 - val_accuracy: 0.9377 - val_loss: 0.1918
+Epoch 10/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.8710 - loss: 0.2833 - val_accuracy: 0.8695 - val_loss: 0.2853
+Model training for Activation: relu, Optimizer: adam completed.
+<span class=" -Color -Color-Bold">60/60</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 33ms/step - accuracy: 0.8546 - loss: 0.2943
+Validation Loss: 0.2853, Validation Accuracy: 0.8695
+
+Running experiment with Activation: tanh, Optimizer: sgd
+Model for Activation: tanh, Optimizer: sgd built and compiled.
+Epoch 1/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">41s</span> 165ms/step - accuracy: 0.5429 - loss: 0.6881 - val_accuracy: 0.5954 - val_loss: 0.6548
+Epoch 2/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.5756 - loss: 0.6652 - val_accuracy: 0.6165 - val_loss: 0.6635
+Epoch 3/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.5718 - loss: 0.6634 - val_accuracy: 0.5938 - val_loss: 0.6429
+Epoch 4/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.5866 - loss: 0.6492 - val_accuracy: 0.6329 - val_loss: 0.6344
+Epoch 5/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.6056 - loss: 0.6406 - val_accuracy: 0.6403 - val_loss: 0.6287
+Epoch 6/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 154ms/step - accuracy: 0.6099 - loss: 0.6405 - val_accuracy: 0.6418 - val_loss: 0.6190
+Epoch 7/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.6126 - loss: 0.6405 - val_accuracy: 0.6619 - val_loss: 0.6218
+Epoch 8/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.6199 - loss: 0.6331 - val_accuracy: 0.6239 - val_loss: 0.6121
+Epoch 9/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.6243 - loss: 0.6348 - val_accuracy: 0.6756 - val_loss: 0.5967
+Epoch 10/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.6147 - loss: 0.6380 - val_accuracy: 0.6223 - val_loss: 0.6171
+Model training for Activation: tanh, Optimizer: sgd completed.
+<span class=" -Color -Color-Bold">60/60</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 33ms/step - accuracy: 0.6310 - loss: 0.6022
+Validation Loss: 0.6171, Validation Accuracy: 0.6223
+
+Running experiment with Activation: leakyrelu, Optimizer: rmsprop
+Model for Activation: leakyrelu, Optimizer: rmsprop built and compiled.
+Epoch 1/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">41s</span> 163ms/step - accuracy: 0.5472 - loss: 0.7885 - val_accuracy: 0.6228 - val_loss: 0.6362
+Epoch 2/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.6123 - loss: 0.6434 - val_accuracy: 0.6825 - val_loss: 0.5971
+Epoch 3/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.6337 - loss: 0.6122 - val_accuracy: 0.7242 - val_loss: 0.5543
+Epoch 4/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">38s</span> 158ms/step - accuracy: 0.6911 - loss: 0.5632 - val_accuracy: 0.7998 - val_loss: 0.4576
+Epoch 5/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">38s</span> 158ms/step - accuracy: 0.7281 - loss: 0.5278 - val_accuracy: 0.8304 - val_loss: 0.3697
+Epoch 6/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 158ms/step - accuracy: 0.7624 - loss: 0.4777 - val_accuracy: 0.8373 - val_loss: 0.3793
+Epoch 7/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.7864 - loss: 0.4348 - val_accuracy: 0.8785 - val_loss: 0.3226
+Epoch 8/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.8052 - loss: 0.4196 - val_accuracy: 0.9081 - val_loss: 0.2633
+Epoch 9/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.8366 - loss: 0.3576 - val_accuracy: 0.9155 - val_loss: 0.2388
+Epoch 10/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 154ms/step - accuracy: 0.8430 - loss: 0.3471 - val_accuracy: 0.9255 - val_loss: 0.2128
+Model training for Activation: leakyrelu, Optimizer: rmsprop completed.
+<span class=" -Color -Color-Bold">60/60</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 33ms/step - accuracy: 0.9251 - loss: 0.2125
+Validation Loss: 0.2128, Validation Accuracy: 0.9255
+
+Running experiment with Activation: elu, Optimizer: adagrad
+Model for Activation: elu, Optimizer: adagrad built and compiled.
+Epoch 1/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">42s</span> 167ms/step - accuracy: 0.5473 - loss: 0.6845 - val_accuracy: 0.6070 - val_loss: 0.6568
+Epoch 2/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.5747 - loss: 0.6699 - val_accuracy: 0.5510 - val_loss: 0.6552
+Epoch 3/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.5891 - loss: 0.6619 - val_accuracy: 0.5848 - val_loss: 0.6482
+Epoch 4/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 155ms/step - accuracy: 0.5739 - loss: 0.6612 - val_accuracy: 0.6292 - val_loss: 0.6390
+Epoch 5/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 157ms/step - accuracy: 0.5853 - loss: 0.6561 - val_accuracy: 0.6387 - val_loss: 0.6331
+Epoch 6/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 157ms/step - accuracy: 0.5811 - loss: 0.6568 - val_accuracy: 0.5679 - val_loss: 0.6461
+Epoch 7/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 157ms/step - accuracy: 0.5953 - loss: 0.6486 - val_accuracy: 0.6323 - val_loss: 0.6293
+Epoch 8/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 156ms/step - accuracy: 0.6110 - loss: 0.6477 - val_accuracy: 0.6397 - val_loss: 0.6268
+Epoch 9/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 157ms/step - accuracy: 0.6088 - loss: 0.6451 - val_accuracy: 0.6138 - val_loss: 0.6319
+Epoch 10/10
+<span class=" -Color -Color-Bold">237/237</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">37s</span> 157ms/step - accuracy: 0.6079 - loss: 0.6394 - val_accuracy: 0.6212 - val_loss: 0.6280
+Model training for Activation: elu, Optimizer: adagrad completed.
+<span class=" -Color -Color-Bold">60/60</span> <span class=" -Color -Color-Green">━━━━━━━━━━━━━━━━━━━━</span> <span class=" -Color -Color-Bold">2s</span> 32ms/step - accuracy: 0.6114 - loss: 0.6337
+Validation Loss: 0.6280, Validation Accuracy: 0.6212
+
+All experiments completed.
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Summarize Results</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Experiment Summary ---&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">exp_name</span><span class="p">,</span> <span class="n">metrics</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Experiment: </span><span class="si">{</span><span class="n">exp_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Validation Accuracy: </span><span class="si">{</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;validation_accuracy&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Validation Loss: </span><span class="si">{</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;validation_loss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Experiment Summary ---
+Experiment: relu_adam
+  Validation Accuracy: 0.8695
+  Validation Loss: 0.2853
+Experiment: tanh_sgd
+  Validation Accuracy: 0.6223
+  Validation Loss: 0.6171
+Experiment: leakyrelu_rmsprop
+  Validation Accuracy: 0.9255
+  Validation Loss: 0.2128
+Experiment: elu_adagrad
+  Validation Accuracy: 0.6212
+  Validation Loss: 0.6280
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="k">for</span> <span class="n">exp_name</span><span class="p">,</span> <span class="n">metrics</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;history&#39;</span><span class="p">]</span>
+    <span class="n">activation_func</span> <span class="o">=</span> <span class="n">exp_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">exp_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="c1"># Plot training &amp; validation accuracy values</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model Accuracy (</span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="s1">&#39;Validation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Plot training &amp; validation loss values</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model Loss (</span><span class="si">{</span><span class="n">activation_func</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">optimizer</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="s1">&#39;Validation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/00dd4c033ee225eca32dd570c49ac2ab3dbf62b69fd449cd8d83a224c788728f.png" src="../_images/00dd4c033ee225eca32dd570c49ac2ab3dbf62b69fd449cd8d83a224c788728f.png" />
+<img alt="../_images/bd4378d78425a5d6e25351dd2ad768c85533521f72a30a1e48eb1e1a8fb132b7.png" src="../_images/bd4378d78425a5d6e25351dd2ad768c85533521f72a30a1e48eb1e1a8fb132b7.png" />
+<img alt="../_images/91f6878d3bba66a578335b9fe496df4c6ae2f84f6d41bb8011184501b494ede0.png" src="../_images/91f6878d3bba66a578335b9fe496df4c6ae2f84f6d41bb8011184501b494ede0.png" />
+<img alt="../_images/ddc5a85bff071fcab54a6a07e4ed7c2154e5a27065845b38895fa9271aed67c8.png" src="../_images/ddc5a85bff071fcab54a6a07e4ed7c2154e5a27065845b38895fa9271aed67c8.png" />
+</div>
+</div>
+<p><strong>Analysis and Comparison of Results</strong></p>
+<p>Among the four experiments, <strong>LeakyReLU with RMSprop</strong> achieved the highest validation accuracy (<strong>0.9255</strong>) and lowest validation loss (<strong>0.2128</strong>), indicating the best model performance and generalization. The <strong>ReLU with Adam</strong> combination followed with a strong accuracy (<strong>0.8695</strong>) and moderate loss (<strong>0.2853</strong>). In contrast, <strong>Tanh with SGD</strong> and <strong>ELU with Adagrad</strong> yielded much lower accuracies (<strong>≈0.62</strong>) and higher losses (<strong>&gt;0.61</strong>), showing slower learning and weaker convergence.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Experiment</p></th>
+<th class="head"><p>Activation</p></th>
+<th class="head"><p>Optimizer</p></th>
+<th class="head"><p>Val Accuracy</p></th>
+<th class="head"><p>Val Loss</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>relu_adam</p></td>
+<td><p>ReLU</p></td>
+<td><p>Adam</p></td>
+<td><p>0.8695</p></td>
+<td><p>0.2853</p></td>
+<td><p>Fast convergence, good accuracy</p></td>
+</tr>
+<tr class="row-odd"><td><p>tanh_sgd</p></td>
+<td><p>Tanh</p></td>
+<td><p>SGD</p></td>
+<td><p>0.6223</p></td>
+<td><p>0.6171</p></td>
+<td><p>Slow learning, vanishing gradient</p></td>
+</tr>
+<tr class="row-even"><td><p>leakyrelu_rmsprop</p></td>
+<td><p>LeakyReLU</p></td>
+<td><p>RMSprop</p></td>
+<td><p><strong>0.9255</strong></p></td>
+<td><p><strong>0.2128</strong></p></td>
+<td><p>Best overall performance</p></td>
+</tr>
+<tr class="row-odd"><td><p>elu_adagrad</p></td>
+<td><p>ELU</p></td>
+<td><p>Adagrad</p></td>
+<td><p>0.6212</p></td>
+<td><p>0.6280</p></td>
+<td><p>Poor generalization</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Explanation of Performance Differences</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Influence of Activation Functions</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>ReLU (Rectified Linear Unit)</strong> accelerates training by reducing vanishing gradients but may cause “dead neurons” when inputs are negative.</p></li>
+<li><p><strong>LeakyReLU</strong> mitigates this by allowing small gradients for negative inputs, maintaining neuron activity throughout training—this likely contributed to its top performance.</p></li>
+<li><p><strong>ELU (Exponential Linear Unit)</strong> can improve learning through smoother negative outputs but may saturate when paired with suboptimal optimizers like Adagrad.</p></li>
+<li><p><strong>Tanh</strong> outputs in the range [-1, 1], which can cause vanishing gradients in deep networks, slowing convergence and limiting accuracy.</p></li>
+</ul>
+<p>Reference:
+Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016). Deep Learning. MIT Press, Chapter 9.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Impact of Optimizers</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>Adam combines momentum and adaptive learning rates, enabling stable and efficient convergence.</p></li>
+<li><p>RMSprop adapts learning rates for each parameter and handles non-stationary objectives well, which suits CNN training.</p></li>
+<li><p>SGD can converge slowly without momentum or learning rate scheduling.</p></li>
+<li><p>Adagrad adapts learning rates aggressively but can decay them too quickly, leading to underfitting.</p></li>
+</ul>
+<p>Reference:
+Kingma, D. P., &amp; Ba, J. (2015). Adam: A Method for Stochastic Optimization. ICLR.</p>
+<p>Hinton, G., Srivastava, N., &amp; Swersky, K. (2012). Lecture 6: RMSProp.</p>
+<p>The <strong>LeakyReLU</strong> + <strong>RMSprop</strong> combination achieved the best trade-off between accuracy and generalization, showing fast, stable convergence with minimal overfitting. It effectively balanced gradient flow and adaptive learning, leading to consistent performance across validation data.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Laboratories"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="laboratory6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Laboratory Task 6</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Blog/blog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>Tuning the Step Size of Learning: A Practical Exploration of Learning Rate on MNIST</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicole Menorias
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
