@@ -1,0 +1,92 @@
+# =========================
+# Jupyter Book Configuration
+# =========================
+
+title: "Deep Learning Portfolio"
+author: "Nicole Menorias"
+logo: "dl.png"
+
+only_build_toc_files: true
+
+# Exclude folders and files that confuse Sphinx / Jekyll
+exclude_patterns:
+  - .venv/**
+  - _build/**
+  - .jupyter_cache/**
+  - references.bib
+
+# Markdown engine
+markdown_engine: myst
+
+# Notebook execution
+execute:
+  execute_notebooks: "off"
+
+# HTML / theme configuration
+html:
+  favicon: "assets/favicon.ico"
+  extra_footer: |
+    <p style="text-align:center;">© 2025 DS413: Deep Learning | Built with ❤️ using Jupyter Book</p>
+  extra_css:
+    - assets/custom.css
+  extra_js:
+    - assets/custom.js
+  theme:
+    name: pydata_sphinx_theme
+    options:
+      navigation_with_keys: true
+      show_navbar_depth: 2
+      show_toc_level: 1
+      collapse_navigation: true
+      sticky_navigation: true
+      navigation_depth: 4
+
+      # === Remove right sidebar ===
+      secondary_sidebar_items: []     # disables sidebar content
+      use_page_toc: false             # disables automatic right TOC
+
+      # === Remove top-right widgets ===
+      use_edit_page_button: false
+      use_repository_button: false
+      use_issues_button: false
+      use_download_button: false
+      icon_links: []                  # removes icons on upper-right
+
+
+      # ===== UI REMOVALS =====
+
+      # Remove right-side widgets (GitHub, theme switcher, search, etc.)
+      navbar_end: []
+      navbar_persistent: []
+
+      # Disable right sidebar completely
+      secondary_sidebar_items: []
+      show_sidebar: false
+
+      # Remove page-level TOC
+      use_page_toc: false
+
+      # Disable additional buttons
+      use_edit_page_button: false
+      use_repository_button: false
+      use_download_button: false
+
+      # Keep prev/next buttons for navigation
+      show_prev_next: true
+
+  use_liquid: false
+
+# Sphinx configuration
+sphinx:
+  config:
+    html_theme_options:
+      navigation_with_keys: true
+      show_navbar_depth: 2
+      show_toc_level: 1
+      collapse_navigation: true
+      sticky_navigation: true
+      navigation_depth: 4
+
+# Dependencies
+dependencies:
+  - requirements.txt

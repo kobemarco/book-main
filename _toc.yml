@@ -1,0 +1,26 @@
+format: jb-book
+root: intro
+
+parts:
+  - caption: Lectures
+    chapters:
+      - file: Lectures/lecture1
+
+  - caption: Laboratories
+    chapters:
+      - file: Laboratories/laboratory1
+      - file: Laboratories/laboratory2
+      - file: Laboratories/laboratory3
+      - file: Laboratories/laboratory4
+      - file: Laboratories/laboratory5
+      - file: Laboratories/laboratory6
+      - file: Laboratories/laboratory7
+
+  - caption: Blog
+    chapters:
+      - file: Blog/blog
+
+  - caption: Project
+    chapters:
+      - file: Project/EDA_Pulmoscope
+      - file: Project/PulmoScope

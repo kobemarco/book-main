@@ -1,0 +1,23 @@
+# Jupyter Book build artifacts
+_build/
+.jupyter_cache/
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.env/
+.venv/
+env/
+venv/
+
+# OS-specific
+.DS_Store
+Thumbs.db

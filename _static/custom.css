@@ -1,0 +1,21 @@
+(/* Always expand all sidebar TOC parts so Project stays visible */)
+.bd-toc-item .caption + .bd-sidenav,
+.bd-toc-item .bd-sidenav,
+.bd-toc-item .bd-sidenav .toctree-l1 {
+	display: block !important;
+	max-height: none !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+/* Also override any collapse utilities the theme may apply */
+.bd-toc-item .collapse {
+	display: block !important;
+	height: auto !important;
+}
+
+/* Ensure hidden helpers don't hide nav entries */
+.bd-toc-item .d-none {
+	display: block !important;
+}
+
