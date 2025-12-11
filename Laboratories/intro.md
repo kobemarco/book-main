@@ -1,7 +1,7 @@
 # **Laboratory**
 
 <p align="justify">
-In this section you will find hands-on coding tasks and applied data experiments.  
+This section are the hands-on coding tasks and applied data experiments.  
 </p>
 
 <div class="gallery-section">
@@ -23,15 +23,15 @@ In this section you will find hands-on coding tasks and applied data experiments
   </a>
 
   <a class="gallery-card" href="../Laboratories/laboratory5.html">
-    <h3>Laboratory 5</h3>
+    <h3>Laboratory Task 5</h3>
   </a>
 
   <a class="gallery-card" href="../Laboratories/laboratory6.html">
-    <h3>Laboratory 6</h3>
+    <h3>Laboratory Task 6</h3>
   </a>
 
   <a class="gallery-card" href="../Laboratories/laboratory7.html">
-    <h3>Laboratory 7</h3>
+    <h3>Laboratory Task 7</h3>
   </a>
 
 </div>
